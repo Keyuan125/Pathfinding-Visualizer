@@ -1,11 +1,11 @@
 // Implement the A Star Algorithm
-import {getAllNodes, getPath, getNeighbors} from 'dijkstra';
+import {getAllNodes, getPath, getNeighbors} from './dijkstra';
 
 
 export function aStar(grid, startNode, finishNode) {
   startNode.distance = 0;
-
-  const visitedNodes = [startNode];
+  startNode.heuristic = heuristic(startNode, finishNode);
+  const visitedNodes = [];
 
   const frontier = [startNode];
 
@@ -13,28 +13,33 @@ export function aStar(grid, startNode, finishNode) {
 
     sortNodesByCost(frontier);
 
-    const previousNode = frontier.shift();
+    const previous = frontier.shift();
     // Might want to rewrite the getNeighbors() function to make sure it
     // works when adding 'weight' property
-    const neighbors = getNeighbors(previousNode, grid);
+    const neighbors = getNeighbors(previous, grid);
 
     // Not sure if this works or not?
     for (const neighbor of neighbors) {
-      neighbor.distance = previousNode.distance + neighbor.weight;
-      neighbor.heuristic = heuristic(neighbor, finishNode);
-      neighbor.previousNode = previsouNode;
-      frontier.push(neighbor);
-      visitedNodes.push(neighbor);
+      if (neighbor.isWall === false) {
+        neighbor.distance = previous.distance + neighbor.weight;
+        neighbor.heuristic = heuristic(neighbor, finishNode);
+        neighbor.previousNode = previous;
+        if (!frontier.includes(neighbor)) {
+          frontier.push(neighbor);
+        }
+      }
     }
 
     // If the closestNode is infinity, that means we are unable to reach the target
-    if (previousNode.distance === Infinity) return visitedNodes;
+    if (previous.distance === Infinity) return visitedNodes;
 
     // If the closestNode is not Infinity, that means we are able to reach it
     else {
-      previousNode.isVisited = true;
-      updateUnvisitedNeighbors(closestNode, grid);
-      if (previousNode === finishNode) return visitedNodes;
+      previous.isVisited = true;
+      visitedNodes.push(previous);
+      if (previous === finishNode) {
+        console.log(visitedNodes);
+        return visitedNodes; }
     }
   }
 }
@@ -45,11 +50,11 @@ export function aStar(grid, startNode, finishNode) {
 // in this case, it's the Euclidean distance
 // between this node and the finish node
 function heuristic(node, finishNode) {
-  const {row1, col1} = node1;
-  const {row2, col2} = finishNode;
-
+  const row1 = node.row;
+  const col1 = node.col;
+  const row2 = finishNode.row;
+  const col2 = finishNode.col;
   const euclideanDistance = Math.sqrt((Math.pow(row1-row2,2) +  Math.pow(col1-col2,2)));
-
   return euclideanDistance;
 }
 

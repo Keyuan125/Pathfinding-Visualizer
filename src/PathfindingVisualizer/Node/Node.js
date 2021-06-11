@@ -4,7 +4,18 @@ import './Node.css';
 
 export default class Node extends Component {
   render() {
-    const {row, col, isStart, isFinish, isWall} = this.props;
+    const {
+      row,
+      col,
+      isStart,
+      isFinish,
+      isWall,
+      onMouseDown,
+      onMouseEnter,
+      onMouseUp,
+      weight,
+      heuristic,
+      } = this.props;
     const extraClassName = isFinish
       ? 'node-finish'
       : isStart
@@ -16,7 +27,10 @@ export default class Node extends Component {
     return (
       <div
         id={`node-${row}-${col}`}
-        className={`node ${extraClassName}`}></div>
+        className={`node ${extraClassName}`}
+        onMouseDown={() => onMouseDown(row, col)}
+        onMouseEnter={() => onMouseEnter(row, col)}
+        onMouseUp={() => onMouseUp()}></div>
     );
   }
 }

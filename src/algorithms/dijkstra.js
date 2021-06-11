@@ -44,7 +44,7 @@ function sortNodesByDistance(unvisitedNodes) {
 
 // take current node and the grid, update the unvisited node and update
 // the distance, return nothing
-function updateUnvisitedNeighbors(node, grid) {
+export function updateUnvisitedNeighbors(node, grid) {
   const unvisitedNeighborNodes = getNeighbors(node, grid);
 
   for (const neighborNode of unvisitedNeighborNodes) {
@@ -58,7 +58,7 @@ function updateUnvisitedNeighbors(node, grid) {
 
 
 // take current node, and return it's unvisited neighbors
-function getNeighbors(node, grid) {
+export function getNeighbors(node, grid) {
   const neighbors = [];
   const {row, col} = node;
 
@@ -72,12 +72,12 @@ function getNeighbors(node, grid) {
   if (col + 1 < grid[0].length) neighbors.push(grid[row][col+1]);
 
   // We only want to consider the unvisited neighbors
-  return neighbors.filter(neighbor => neighbor.isVisited === false);
+  return neighbors.filter(neighbor => neighbor.isVisited === false, neighbor => neighbor.isWall === false);
 }
 
 
 // Return all the nodes (a list), and filter out all the wall nodes
-function getAllNodes(grid) {
+export function getAllNodes(grid) {
   const nodes = [];
 
   for (const row of grid) {
