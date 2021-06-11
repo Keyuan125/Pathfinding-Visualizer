@@ -21,7 +21,6 @@ export default class PathfindingVisualizer extends Component {
   // Naively create a 20X50 grid on the screen
   componentDidMount() {
     const grid = initializeGrid();
-
     this.setState({grid});
   }
 
@@ -47,7 +46,6 @@ export default class PathfindingVisualizer extends Component {
 
   animateShortestPath(path) {
     for (let i = 1; i < path.length-1; i++) {
-      console.log(path[i]);
       setTimeout(() => {
         const node = path[i];
         document.getElementById(`node-${node.row}-${node.col}`).className='node node-shortest-path';}, 50*i);
