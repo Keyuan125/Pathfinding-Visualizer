@@ -31,17 +31,21 @@ export function aStar(grid, startNode, finishNode) {
     }
 
     // If the closestNode is infinity, that means we are unable to reach the target
-    if (previous.distance === Infinity) return visitedNodes;
+    if (previous.distance === Infinity) {
+      return visitedNodes;
+    }
 
     // If the closestNode is not Infinity, that means we are able to reach it
     else {
       previous.isVisited = true;
       visitedNodes.push(previous);
       if (previous === finishNode) {
-        console.log(visitedNodes);
-        return visitedNodes; }
+        return visitedNodes;
+      }
     }
   }
+  // If we traverse all the nodes but we're still unable to find the target, return anyway.
+  return visitedNodes;
 }
 
 
