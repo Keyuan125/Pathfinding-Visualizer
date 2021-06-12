@@ -87,10 +87,27 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  refreshGridWithWall() {
+    const {grid} = this.state;
+    for (const row of grid) {
+      for (const node of row) {
+        node.distance = Infinity;
+        node.isVisited = false;
+        node.previousNode = null;
+        node.weight = 1;
+        node.heuristic = 0;
+        const nodeClassName = document.getElementById(`node-${node.row}-${node.col}`).className;
+        if (nodeClassName === 'node node-shortest-path' || nodeClassName === 'node node-visited') {
+          document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-unvisited';
+        }
+      }
+    }
+  }
 
   visualizeDijkstra() {
-    const {grid} = this.state;
 
+    const {grid} = this.state;
+    this.refreshGridWithWall(grid);
     const startNode = grid[DEFAULT_START_ROW][DEFAULT_START_COL];
     const finishNode = grid[DEFAULT_TARGET_ROW][DEFAULT_TARGET_COL];
 
@@ -100,8 +117,9 @@ export default class PathfindingVisualizer extends Component {
   }
 
   visualizeAStar() {
-    const {grid} = this.state;
 
+    const {grid} = this.state;
+    this.refreshGridWithWall(grid);
     const startNode = grid[DEFAULT_START_ROW][DEFAULT_START_COL];
     const finishNode = grid[DEFAULT_TARGET_ROW][DEFAULT_TARGET_COL];
     const visited = aStar(grid, startNode, finishNode);
