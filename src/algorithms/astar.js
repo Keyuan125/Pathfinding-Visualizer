@@ -18,7 +18,6 @@ export function aStar(grid, startNode, finishNode) {
     // works when adding 'weight' property
     const neighbors = getNeighbors(previous, grid);
 
-    // Not sure if this works or not?
     for (const neighbor of neighbors) {
       if (neighbor.isWall === false) {
         neighbor.distance = previous.distance + neighbor.weight;
