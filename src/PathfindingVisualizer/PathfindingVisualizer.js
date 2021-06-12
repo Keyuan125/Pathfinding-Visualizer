@@ -26,7 +26,6 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
-    console.log("Mouse Down");
     const newGrid = getNewGridWithWallToggled(this.state.grid, row, col);
     this.setState({grid: newGrid, mouseIsPressed: true});
   }
@@ -87,10 +86,11 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  refreshGridWithWall() {
+  refreshGrid(refreshWall) {
     const {grid} = this.state;
     for (const row of grid) {
       for (const node of row) {
+
         node.distance = Infinity;
         node.isVisited = false;
         node.previousNode = null;
@@ -100,6 +100,13 @@ export default class PathfindingVisualizer extends Component {
         if (nodeClassName === 'node node-shortest-path' || nodeClassName === 'node node-visited') {
           document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-unvisited';
         }
+
+        if (refreshWall == true) {
+          node.isWall = false;
+          if (nodeClassName === 'node node-wall') {
+            document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-unvisited';
+          }
+        }
       }
     }
   }
@@ -107,7 +114,7 @@ export default class PathfindingVisualizer extends Component {
   visualizeDijkstra() {
 
     const {grid} = this.state;
-    this.refreshGridWithWall(grid);
+    this.refreshGrid(false);
     const startNode = grid[DEFAULT_START_ROW][DEFAULT_START_COL];
     const finishNode = grid[DEFAULT_TARGET_ROW][DEFAULT_TARGET_COL];
 
@@ -119,7 +126,7 @@ export default class PathfindingVisualizer extends Component {
   visualizeAStar() {
 
     const {grid} = this.state;
-    this.refreshGridWithWall(grid);
+    this.refreshGrid(false);
     const startNode = grid[DEFAULT_START_ROW][DEFAULT_START_COL];
     const finishNode = grid[DEFAULT_TARGET_ROW][DEFAULT_TARGET_COL];
     const visited = aStar(grid, startNode, finishNode);
@@ -138,6 +145,9 @@ export default class PathfindingVisualizer extends Component {
         </button>
         <button onClick={() => this.visualizeAStar()}>
           Visualize A Star Algorithm
+        </button>
+        <button onClick={() => this.refreshGrid(true)}>
+          Reset Grid
         </button>
       <div className="grid">
         {grid.map((row, rowIdx) => {
