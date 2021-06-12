@@ -90,7 +90,6 @@ export default class PathfindingVisualizer extends Component {
     const {grid} = this.state;
     for (const row of grid) {
       for (const node of row) {
-
         node.distance = Infinity;
         node.isVisited = false;
         node.previousNode = null;
@@ -101,7 +100,7 @@ export default class PathfindingVisualizer extends Component {
           document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-unvisited';
         }
 
-        if (refreshWall == true) {
+        if (refreshWall === true) {
           node.isWall = false;
           if (nodeClassName === 'node node-wall') {
             document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-unvisited';
