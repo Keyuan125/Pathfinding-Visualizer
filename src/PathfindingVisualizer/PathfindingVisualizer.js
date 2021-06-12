@@ -5,10 +5,10 @@ import './PathfindingVisualizer.css';
 import {dijkstra, getPath} from '../algorithms/dijkstra';
 import {aStar} from '../algorithms/astar';
 
-const DEFAULT_START_ROW = 5;
-const DEFAULT_START_COL = 10;
-const DEFAULT_TARGET_ROW = 10;
-const DEFAULT_TARGET_COL = 15;
+const DEFAULT_START_ROW = 4;
+const DEFAULT_START_COL = 4;
+const DEFAULT_TARGET_ROW = 15;
+const DEFAULT_TARGET_COL = 30;
 
 export default class PathfindingVisualizer extends Component {
   constructor() {
